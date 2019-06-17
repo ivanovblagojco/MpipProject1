@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String addres=editTextAddress.getText().toString().trim();
 
         UserInfo userInfo=new UserInfo(name, addres);
-    
+
         FirebaseUser user=firebaseAuth.getCurrentUser();
         databaseReference.child(user.getUid() + "/LicniPodatoci").setValue(userInfo);
         Toast.makeText(this, "Information saved...", Toast.LENGTH_SHORT).show();

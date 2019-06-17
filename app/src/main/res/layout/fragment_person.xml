@@ -12,15 +12,18 @@
         android:layout_marginTop="26dp"
         android:src="@drawable/add"
         app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp" />
+        app:civ_border_width="2dp"
+        />
 
     <TextView
+        android:id="@+id/textViewIme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Ime Prezime" />
+        android:text="Ime Prezime"
+        />
 
     <Button
         android:id="@+id/updateinfo"
