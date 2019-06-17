@@ -23,7 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.korisnik.mpipproject.Models.Homeless;
+import com.example.korisnik.mpipproject.Models.Need;
 import com.example.korisnik.mpipproject.R;
+import com.example.korisnik.mpipproject.Repository.HomelessRepository;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mapping extends FragmentActivity implements OnMapReadyCallback {
@@ -48,6 +52,7 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     LocationManager locationManager;
     private static final int REQUEST_LOCATION_PERMISSION=1;
+    private HomelessRepository homelessRepository;
 
     LocationListener locationListener;
     double latitude, longitude;
@@ -102,25 +107,26 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    lat=""+latitude;
-                    lon="" + longitude;
+
 
                     ImageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                      @Override
                     public void onSuccess(Uri uri) {
                     FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-                    String key=user.getUid().toString();
-                    DatabaseReference ImageStore=FirebaseDatabase.getInstance().getReference().child(user.getUid()+"/" + "Prijaveni/").push();
 
+                    //Adding new person to database
+                    //Needs neresheno
                     String url=String.valueOf(uri);
-                    UserApplicant userApplicant=new UserApplicant(name, surname, needs,url, lat, lon);
-                    ImageStore.setValue(userApplicant).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                     Toast.makeText(getApplicationContext(), "Saved...", Toast.LENGTH_SHORT).show();
-                     dialog.dismiss();
-                     }
-                    });
+                    LatLng location = new LatLng(latitude,longitude);
+
+                    //Za needs imam edna ideja kje ja sredime na kraj koa kje ja zavrshuvame
+                    List<Need> lista = new ArrayList<>();
+                    lista.add(new Need("Voda","Premnogu"));
+
+                    //Samo za age ako mozesh dodadi vo view-to
+                    Homeless person = new Homeless(name,surname,url,lista,location,age,user);
+
+                    homelessRepository.insert(person);
                      }
                     });
                       }
