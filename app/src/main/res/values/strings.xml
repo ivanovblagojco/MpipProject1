@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MpipProject</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_mapping">Map</string>
+</resources>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "831669845016",
+    "firebase_url": "https://mpipproject-c45a9.firebaseio.com",
+    "project_id": "mpipproject-c45a9",
+    "storage_bucket": "mpipproject-c45a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831669845016:android:575fc7e6700c5d47",
+        "android_client_info": {
+          "package_name": "com.example.korisnik.mpipproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831669845016-9eikdc11pk6a5gml804ci94lgan86ipd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.korisnik.mpipproject",
+            "certificate_hash": "3598a11599a946df3ad0f598c21a11d27abb827d"
+          }
+        },
+        {
+          "client_id": "831669845016-45ft8q5v5kci7ar2h4vu8ap7hmtea7i5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDli1egtriOUtDfldWCq9WbVe6MYWDse68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831669845016-45ft8q5v5kci7ar2h4vu8ap7hmtea7i5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
