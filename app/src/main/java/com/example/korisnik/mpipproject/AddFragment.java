@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.korisnik.mpipproject.Models.Homeless;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -159,8 +160,7 @@ public class AddFragment extends Fragment {
                                         String name=editTextName.getText().toString().trim();
                                         String surname =editTextSurname.getText().toString().trim();
                                         String needs=editTextNeeds.getText().toString().trim();
-                                        String url=String.valueOf(uri);
-                                        UserApplicant userApplicant=new UserApplicant(name, surname, needs,url, "","");
+                                        String url = String.valueOf(uri);
                                         Intent intent=new Intent(getContext(), Mapping.class);
                                         intent.putExtra("Imagedata" , imageData.toString());
                                         intent.putExtra("Name" , name);

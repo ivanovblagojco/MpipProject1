@@ -8,6 +8,11 @@ public class Need {
 
     private String priority;
 
+    public Need(String name, String priority) {
+        this.name = name;
+        this.priority = priority;
+    }
+
     public String getName() {
         return name;
     }

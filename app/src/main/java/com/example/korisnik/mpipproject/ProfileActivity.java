@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.korisnik.mpipproject.Models.UserInfo;
+import com.example.korisnik.mpipproject.Repository.UserRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button buttonLogout;
 
     private DatabaseReference databaseReference;
+    private UserRepository userRepository;
     private EditText editTextName;
     private EditText editTextAddress;
     private Button buttonSave;
@@ -37,9 +40,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         FirebaseUser user=firebaseAuth.getCurrentUser();
 
 
-
-
-
         editTextAddress=(EditText)findViewById(R.id.user_addres);
         editTextName=(EditText)findViewById(R.id.user_name);
         buttonSave=(Button) findViewById(R.id.btn_save);
@@ -52,11 +52,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void saveUserInfo(){
         String name= editTextName.getText().toString().trim();
         String addres=editTextAddress.getText().toString().trim();
-
-        UserInfo userInfo=new UserInfo(name, addres);
-
         FirebaseUser user=firebaseAuth.getCurrentUser();
-        databaseReference.child(user.getUid() + "/LicniPodatoci").setValue(userInfo);
+        String userID=user.getUid();
+
+        //Adding new users to repository
+        UserInfo userInfo=new UserInfo(userID, name, addres);
+        userRepository.insert(userInfo);
+
         Toast.makeText(this, "Information saved...", Toast.LENGTH_SHORT).show();
 
     }

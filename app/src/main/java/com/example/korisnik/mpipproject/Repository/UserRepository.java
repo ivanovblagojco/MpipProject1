@@ -1,14 +1,12 @@
 package com.example.korisnik.mpipproject.Repository;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.korisnik.mpipproject.Models.Homeless;
-import com.google.firebase.database.ChildEventListener;
+import com.example.korisnik.mpipproject.Models.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,17 +16,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.constraint.Constraints.TAG;
-
-public class HomelessRepository {
+public class UserRepository {
     private DatabaseReference databaseReference;
-    private List<Homeless> homelessList;
+    private List<UserInfo> usersList;
     private Context mContext;
 
-    public HomelessRepository() {
+    public UserRepository() {
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
-        homelessList = new ArrayList<>();
-        readData();
+        usersList = new ArrayList<>();
     }
 
     public void readData(){
@@ -41,9 +36,9 @@ public class HomelessRepository {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                            Homeless homeless = postSnapshot.getValue(Homeless.class);
-                            Log.e("Get Data", homeless.getName());
-                            homelessList.add(homeless);
+                            UserInfo userInfo = postSnapshot.getValue(UserInfo.class);
+                            Log.e("Get Data", userInfo.getName());
+                            usersList.add(userInfo);
                         }
                     }
 
@@ -52,22 +47,22 @@ public class HomelessRepository {
                         Log.e("The read failed: " ,databaseError.getMessage());
                     }
                 };
-                databaseReference.child("Homeless").addValueEventListener(valueEventListener);
+                databaseReference.child("Users").addValueEventListener(valueEventListener);
                 return null;
             }
         }.execute();
     }
-    public List<Homeless> getHomelessList() {
+    public List<UserInfo> getUsersList() {
         readData();
-        return homelessList;
+        return usersList;
     }
 
-    public void insert(final Homeless homeless){
+    public void insert(final UserInfo user){
         new AsyncTask<Void, Void, Void>(){
 
             @Override
             protected Void doInBackground(Void... voids) {
-                databaseReference.child("Homeless").push().setValue(homeless);
+                databaseReference.child("Users").child(user.getUserID()).setValue(user);
                 return null;
             }
         }.execute();

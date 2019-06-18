@@ -124,7 +124,7 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
                     lista.add(new Need("Voda","Premnogu"));
 
                     //Samo za age ako mozesh dodadi vo view-to
-                    Homeless person = new Homeless(name,surname,url,lista,location,age,user);
+                    Homeless person = new Homeless(name,surname,url,lista,location,22,user);
 
                     homelessRepository.insert(person);
                      }
