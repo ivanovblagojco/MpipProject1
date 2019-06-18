@@ -56,6 +56,7 @@ public class AddFragment extends Fragment {
     EditText editTextName;
     EditText editTextSurname;
     EditText editTextNeeds;
+    EditText editTextAge;
     TextView locationTextView;
     Button for_loc;
     Uri uri;
@@ -79,6 +80,7 @@ public class AddFragment extends Fragment {
         editTextName = (EditText) rootView.findViewById(R.id.name);
         editTextSurname = (EditText) rootView.findViewById(R.id.surname);
         editTextNeeds = (EditText) rootView.findViewById(R.id.needs);
+        editTextAge=(EditText)rootView.findViewById(R.id.age);
         checkFilePermissions();
         for_loc=(Button)rootView.findViewById(R.id.loc);
 
@@ -160,12 +162,14 @@ public class AddFragment extends Fragment {
                                         String name=editTextName.getText().toString().trim();
                                         String surname =editTextSurname.getText().toString().trim();
                                         String needs=editTextNeeds.getText().toString().trim();
+                                        String age=editTextAge.getText().toString().trim();
                                         String url = String.valueOf(uri);
                                         Intent intent=new Intent(getContext(), Mapping.class);
                                         intent.putExtra("Imagedata" , imageData.toString());
                                         intent.putExtra("Name" , name);
                                         intent.putExtra("Surname" , surname);
                                         intent.putExtra("Needs", needs);
+                                        intent.putExtra("Ages", age);
                                         startActivity(intent);
                                         //ImageStore.setValue(userApplicant).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             //@Override

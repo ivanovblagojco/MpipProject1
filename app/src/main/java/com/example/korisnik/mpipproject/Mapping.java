@@ -62,6 +62,7 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
     String lat;
     String lon;
     String name;
+    String ages;
     String surname;
     String needs;
     Uri imageData;
@@ -99,6 +100,7 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
                     surname=intent.getExtras().getString("Surname");
                     needs=intent.getExtras().getString("Needs");
                     img=intent.getExtras().getString("Imagedata");
+                    ages=intent.getExtras().getString("Ages");
                     imageData=Uri.parse(img);
 
                     final StorageReference ImageName=Folder.child("image"+imageData.getLastPathSegment());
@@ -123,8 +125,9 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
                     List<Need> lista = new ArrayList<>();
                     lista.add(new Need("Voda","Premnogu"));
 
+                    int ageH=Integer.parseInt(ages);
                     //Samo za age ako mozesh dodadi vo view-to
-                    Homeless person = new Homeless(name,surname,url,lista,location,22,user);
+                    Homeless person = new Homeless(name,surname,url,lista,location,ageH,user);
 
                     homelessRepository.insert(person);
                      }
