@@ -13,22 +13,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.korisnik.mpipproject.Models.Homeless;
+import com.example.korisnik.mpipproject.Models.UserInfo;
+import com.example.korisnik.mpipproject.Repository.HomelessRepository;
+import com.example.korisnik.mpipproject.Repository.UserRepository;
+
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-
+    HomelessRepository repository;
+    UserRepository repository1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         BottomNavigationView bottomNav=findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contanier, new HomeFragment()).commit();
-
-
 
     }
 
