@@ -28,7 +28,7 @@ public class HomelessRepository {
     public HomelessRepository() {
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
         homelessList = new ArrayList<>();
-        readData();
+
     }
 
     public void readData(){

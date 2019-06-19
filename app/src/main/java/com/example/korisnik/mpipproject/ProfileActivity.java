@@ -44,9 +44,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         editTextName=(EditText)findViewById(R.id.user_name);
         buttonSave=(Button) findViewById(R.id.btn_save);
         databaseReference=FirebaseDatabase.getInstance().getReference();
-
+        userRepository = new UserRepository();
 
         buttonSave.setOnClickListener(this);
+
     }
 
     public void saveUserInfo(){

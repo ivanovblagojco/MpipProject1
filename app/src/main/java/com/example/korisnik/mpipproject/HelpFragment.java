@@ -49,7 +49,7 @@ public class HelpFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull HomelessViewHolder homelessViewHolder, int i) {
-            homelessViewHolder.mTextView.setText(homelessList.get(i).getName());
+            //homelessViewHolder.mTextView.setText(homelessList.get(i).getName());
         }
 
         @Override

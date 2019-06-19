@@ -47,8 +47,8 @@ public class PersonFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View rootView=  inflater.inflate(R.layout.fragment_person, container, false);
-       firebaseAuth=FirebaseAuth.getInstance();
+        View rootView=  inflater.inflate(R.layout.fragment_person, container, false);
+        firebaseAuth=FirebaseAuth.getInstance();
         updateinfo=rootView.findViewById(R.id.updateinfo);
         logout=rootView.findViewById(R.id.logout);
         imageView=(CircleImageView)rootView.findViewById(R.id.profile_image);
@@ -78,20 +78,20 @@ public class PersonFragment extends Fragment {
             }
         });
 
-        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference firebaseDatabase=FirebaseDatabase.getInstance().getReference().child(user.getUid());
+        final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference firebaseDatabase=FirebaseDatabase.getInstance().getReference();
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("SlikiZaUser").getValue()!=null)
+                if(dataSnapshot.child(user.getUid()).child("/SlikiZaUser").getValue()!=null)
                 {
-                    String dURL = dataSnapshot.child("SlikiZaUser").getValue().toString();
+                    String dURL = dataSnapshot.child(user.getUid()).child("/SlikiZaUser").getValue().toString();
                     Glide.with(getContext()).load(dURL).into(imageView);
                 }
 
-                if(dataSnapshot.child("LicniPodatoci/name").getValue()!=null)
+                if(dataSnapshot.child("Users").child(user.getUid()).child("/name").getValue()!=null)
                 {
-                    String name=dataSnapshot.child("LicniPodatoci/name").getValue().toString();
+                    String name=dataSnapshot.child("Users").child(user.getUid()).child("/name").getValue().toString();
                     textViewIme.setText(name);
                 }
 
@@ -111,45 +111,45 @@ public class PersonFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if(requestCode==ImageBack)
+        if(requestCode==ImageBack)
+        {
+            if(resultCode==RESULT_OK)
             {
-                if(resultCode==RESULT_OK)
-                {
-                    final Uri imageData = data.getData();
-                    imageView.setImageURI(imageData);
-                    progressDialog=new ProgressDialog(getContext());
-                    progressDialog.setMessage("Saving profile picture");
-                    progressDialog.show();
-                    final StorageReference ImageName=Folder.child("image"+imageData.getLastPathSegment());
+                final Uri imageData = data.getData();
+                imageView.setImageURI(imageData);
+                progressDialog=new ProgressDialog(getContext());
+                progressDialog.setMessage("Saving profile picture");
+                progressDialog.show();
+                final StorageReference ImageName=Folder.child("image"+imageData.getLastPathSegment());
 
-                    ImageName.putFile(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                ImageName.putFile(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
 
 
-                            ImageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-                                    String key=user.getUid().toString();
-                                    DatabaseReference ImageStore=FirebaseDatabase.getInstance().getReference().child(user.getUid()+"/" + "SlikiZaUser/");
+                        ImageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+                                String key=user.getUid().toString();
+                                DatabaseReference ImageStore=FirebaseDatabase.getInstance().getReference().child(user.getUid()+"/" + "SlikiZaUser/");
 
-                                    String url=String.valueOf(uri);
+                                String url=String.valueOf(uri);
 
-                                    ImageStore.setValue(url).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Toast.makeText(getContext(), "Saved...", Toast.LENGTH_SHORT).show();
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
+                                ImageStore.setValue(url).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getContext(), "Saved...", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
+        }
     }
 
     public void openProfileActivity(){

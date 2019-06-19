@@ -82,6 +82,7 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        homelessRepository=new HomelessRepository();
         auth = FirebaseAuth.getInstance();
         Folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
         dialog=new ProgressDialog(Mapping.this);
@@ -127,9 +128,10 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
 
                     int ageH=Integer.parseInt(ages);
                     //Samo za age ako mozesh dodadi vo view-to
-                    Homeless person = new Homeless(name,surname,url,lista,location,ageH,user);
+                    Homeless person = new Homeless(name,surname,url,lista,location,22,user);
 
                     homelessRepository.insert(person);
+                    dialog.dismiss();
                      }
                     });
                       }
