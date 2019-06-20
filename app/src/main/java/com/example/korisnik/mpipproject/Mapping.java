@@ -132,6 +132,9 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
 
                     homelessRepository.insert(person);
                     dialog.dismiss();
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                      }
                     });
                       }

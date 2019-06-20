@@ -54,55 +54,68 @@ public class PersonFragment extends Fragment {
         imageView=(CircleImageView)rootView.findViewById(R.id.profile_image);
         textViewIme=(TextView)rootView.findViewById(R.id.textViewIme);
         Folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
-        updateinfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openProfileActivity();
-            }
-        });
+        if(firebaseAuth.getCurrentUser()==null)
+        {
+            getActivity().finish();
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
+        else{
+            updateinfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openProfileActivity();
+                }
+            });
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseAuth.signOut();
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    firebaseAuth.signOut();
 
-                startActivity(new Intent(getContext(), LoginActivity.class));
-            }
-        });
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent,ImageBack);
-            }
-        });
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                }
+            });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    startActivityForResult(intent,ImageBack);
+                }
+            });
 
-        final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference firebaseDatabase=FirebaseDatabase.getInstance().getReference();
-        firebaseDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child(user.getUid()).child("/SlikiZaUser").getValue()!=null)
-                {
-                    String dURL = dataSnapshot.child(user.getUid()).child("/SlikiZaUser").getValue().toString();
-                    Glide.with(getContext()).load(dURL).into(imageView);
+            final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference firebaseDatabase=FirebaseDatabase.getInstance().getReference();
+            firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(isAdded())
+                    {
+                        if(dataSnapshot.child(user.getUid()).child("/SlikiZaUser").getValue()!=null)
+                        {
+                            String dURL = dataSnapshot.child(user.getUid()).child("/SlikiZaUser").getValue().toString();
+                            Glide.with(getContext()).load(dURL).into(imageView);
+                        }
+                    }
+
+
+                    if(dataSnapshot.child("Users").child(user.getUid()).child("/name").getValue()!=null)
+                    {
+                        String name=dataSnapshot.child("Users").child(user.getUid()).child("/name").getValue().toString();
+                        textViewIme.setText(name);
+                    }
+
                 }
 
-                if(dataSnapshot.child("Users").child(user.getUid()).child("/name").getValue()!=null)
-                {
-                    String name=dataSnapshot.child("Users").child(user.getUid()).child("/name").getValue().toString();
-                    textViewIme.setText(name);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
+            });
 
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+        }
 
         return rootView;
     }

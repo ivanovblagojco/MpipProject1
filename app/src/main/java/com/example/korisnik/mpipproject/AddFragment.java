@@ -91,6 +91,12 @@ public class AddFragment extends Fragment {
 
 
         auth = FirebaseAuth.getInstance();
+        if(auth.getCurrentUser()==null)
+        {
+            getActivity().finish();
+            Intent intent  = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
         Folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
 
 

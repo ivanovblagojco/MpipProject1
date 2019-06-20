@@ -1,6 +1,6 @@
 package com.example.korisnik.mpipproject;
 
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,11 +8,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import java.util.Map;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.Random;
 
 public class HomeFragment extends Fragment {
@@ -48,8 +50,11 @@ public class HomeFragment extends Fragment {
                 imageView.setBackgroundResource(R.drawable.background5);
                 break;
         }
+
+
         return  rootView;
 
     }
+
 
 }
