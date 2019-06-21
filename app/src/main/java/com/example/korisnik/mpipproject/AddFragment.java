@@ -41,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -58,6 +59,7 @@ public class AddFragment extends Fragment {
     EditText editTextNeeds;
     EditText editTextAge;
     TextView locationTextView;
+
     Button for_loc;
     Uri uri;
     String userID;
@@ -81,7 +83,7 @@ public class AddFragment extends Fragment {
         editTextSurname = (EditText) rootView.findViewById(R.id.surname);
         editTextNeeds = (EditText) rootView.findViewById(R.id.needs);
         editTextAge=(EditText)rootView.findViewById(R.id.age);
-        checkFilePermissions();
+        //checkFilePermissions();
         for_loc=(Button)rootView.findViewById(R.id.loc);
 
 
@@ -114,12 +116,14 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
                 startActivityForResult(intent, ImageBack);
             }
         });
 
         return rootView;
     }
+    //ne e povikana nikade
     private void checkFilePermissions() {
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
             int permissionCheck = getContext().checkSelfPermission("Manifest.permission.READ_EXTERNAL_STORAGE");
@@ -143,11 +147,17 @@ public class AddFragment extends Fragment {
         {
             if(resultCode==RESULT_OK)
             {
+
+                    //Bundle bundle =data.getExtras();
+                    //final Bitmap bitmap=(Bitmap)bundle.get("data");
+                    //imageView.setImageBitmap(bitmap);
                 final Uri imageData = data.getData();
                 imageView.setImageURI(imageData);
-                //Bundle bundle =data.getExtras();
-               // final Bitmap bitmap=(Bitmap)bundle.get("data");
-                //imageView.setImageBitmap(bitmap);
+
+
+
+
+
                 for_loc.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -1,7 +1,9 @@
 package com.example.korisnik.mpipproject;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -28,13 +30,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        checkFilePermissions();
         BottomNavigationView bottomNav=findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contanier, new HomeFragment()).commit();
 
     }
+    private void checkFilePermissions() {
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
+            int permissionCheck = getApplicationContext().checkSelfPermission("Manifest.permission.READ_EXTERNAL_STORAGE");
+            permissionCheck += getApplicationContext().checkSelfPermission("Manifest.permission.WRITE_EXTERNAL_STORAGE");
+            permissionCheck += getApplicationContext().checkSelfPermission("Manifest.permission.CAMERA");
+            permissionCheck += getApplicationContext().checkSelfPermission("Manifest.permission.ACCESS_FINE_LOCATION");
+            if (permissionCheck != 0) {
+                this.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION}, 1001); //Any number
+            }
+        }else{
 
+        }
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener=
             new BottomNavigationView.OnNavigationItemSelectedListener() {
