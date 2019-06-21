@@ -19,18 +19,16 @@ import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView= inflater.inflate(R.layout.fragment_home, container, false);
 
-
-
         RelativeLayout imageView = (RelativeLayout) rootView.findViewById(R.id.background_image);
 
-        Random r=new Random();
+
+        Random r = new Random();
         int i = r.nextInt(4);
         switch (i)
         {
