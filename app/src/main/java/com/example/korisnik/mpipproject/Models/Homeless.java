@@ -1,46 +1,72 @@
 package com.example.korisnik.mpipproject.Models;
 
+import android.support.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Homeless {
+public class Homeless implements Comparable<Homeless>{
     private String name;
     private String surname;
     private String imageUrl;
-    private List<Need> needs;
-    private LatLng location;
+    private String needs;
+    private double latitude;
+    private double longitude;
     private int age;
-    private Date addedOn;
-    private FirebaseUser addedBy;
+    private String addedOn;
+    private float distance;
 
-    public Homeless(String name, String surname, String imageUrl, List<Need> needs, LatLng location, int age, FirebaseUser addedBy) {
+    public String getAddedOn() {
+        return addedOn;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setAddedOn(String addedOn) {
+        this.addedOn = addedOn;
+    }
+
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+
+    public Homeless(String name, String surname, String imageUrl, String needs, int age, double latitude, double longitude) {
         this.name = name;
         this.surname = surname;
         this.imageUrl = imageUrl;
         this.needs = needs;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.age = age;
-        this.addedBy = addedBy;
-        this.addedOn = new Date();
-    }
-
-    public Date getAddedOn() {
-        return addedOn;
-    }
-
-    public void setAddedOn(Date addedOn) {
-        this.addedOn = addedOn;
-    }
-
-    public FirebaseUser getAddedBy() {
-        return addedBy;
-    }
-
-    public void setAddedBy(FirebaseUser addedBy) {
-        this.addedBy = addedBy;
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        this.addedOn = dateFormat.format(date);
     }
 
     public Homeless() {
@@ -71,17 +97,11 @@ public class Homeless {
         this.surname = surname;
     }
 
-    public List<Need> getNeeds() {
+    public String getNeeds() {
         return needs;
     }
 
-    public Homeless(String name, String surname, int age) {
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-    }
-
-    public void setNeeds(List<Need> needs) {
+    public void setNeeds(String needs) {
         this.needs = needs;
     }
 
@@ -93,12 +113,33 @@ public class Homeless {
         this.age = age;
     }
 
-    public LatLng getLocation() {
-        return location;
+
+    @Override
+    public int compareTo(@NonNull Homeless o) {
+
+        if (this.distance > o.getDistance()) {
+            return 1;
+        }
+        else if (this.distance <  o.getDistance()) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
     }
 
-    public void setLocation(LatLng location) {
-        this.location = location;
+    @Override
+    public String toString() {
+        return "Homeless{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", needs='" + needs + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", age=" + age +
+                ", addedOn='" + addedOn + '\'' +
+                ", distance=" + distance +
+                '}';
     }
-
 }

@@ -1,5 +1,6 @@
 package com.example.korisnik.mpipproject;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +31,8 @@ public class StatsFragment extends Fragment {
     RecyclerView recyclerView;
     String [] items;
     String [] items2;
+    private ProgressDialog dialog;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,6 +42,10 @@ public class StatsFragment extends Fragment {
         items=new String[13];
         items2=new String[13];
         recyclerView=(RecyclerView)rootView.findViewById(R.id.recyclerview);
+
+        dialog=new ProgressDialog(getContext());
+        dialog.setMessage("Loading data");
+        dialog.show();
         new doit().execute();
 
         return rootView;
@@ -81,6 +88,7 @@ public class StatsFragment extends Fragment {
 
 
                 }
+                dialog.dismiss();
 
 
             }

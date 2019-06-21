@@ -11,21 +11,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.korisnik.mpipproject.Models.Homeless;
-import com.example.korisnik.mpipproject.Models.Need;
-import com.example.korisnik.mpipproject.R;
 import com.example.korisnik.mpipproject.Repository.HomelessRepository;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,14 +29,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Mapping extends FragmentActivity implements OnMapReadyCallback {
@@ -120,16 +114,13 @@ public class Mapping extends FragmentActivity implements OnMapReadyCallback {
                     //Adding new person to database
                     //Needs neresheno
                     String url=String.valueOf(uri);
-                    LatLng location = new LatLng(latitude,longitude);
 
                     //Za needs imam edna ideja kje ja sredime na kraj koa kje ja zavrshuvame
-                    List<Need> lista = new ArrayList<>();
-                    lista.add(new Need("Voda","Premnogu"));
 
                     int ageH=Integer.parseInt(ages);
-                    //Samo za age ako mozesh dodadi vo view-to
-                    Homeless person = new Homeless(name,surname,url,lista,location,22,user);
 
+
+                    Homeless person = new Homeless(name,surname,url,needs,22,latitude,longitude);
                     homelessRepository.insert(person);
                     dialog.dismiss();
                     finish();
