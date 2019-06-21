@@ -3,4 +3,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_mapping">Map</string>
     <string name="firstMessage"><i>With the increase in the world population, the number of people who remain without their home proportionally increases. This application is a tool for mapping them and publishing their needs.</i></string>
+    <string name="facebook_app_id">326526098283625</string>
+    <string name="fb_login_protocol_scheme">fb326526098283625</string>
 </resources>
