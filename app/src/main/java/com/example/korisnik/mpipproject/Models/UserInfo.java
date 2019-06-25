@@ -4,6 +4,22 @@ public class UserInfo {
     private String UserID;
     public String name;
     public String address;
+    public String imageUrl;
+
+    public UserInfo(String userID, String name, String address, String imageUrl) {
+        UserID = userID;
+        this.name = name;
+        this.address = address;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public UserInfo(){}
 

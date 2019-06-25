@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.korisnik.mpipproject.Models.UserInfo;
+import com.facebook.AccessToken;
+import com.facebook.Profile;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,13 +58,37 @@ public class PersonFragment extends Fragment {
         imageView=(CircleImageView)rootView.findViewById(R.id.profile_image);
         textViewIme=(TextView)rootView.findViewById(R.id.textViewIme);
         Folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
-        if(firebaseAuth.getCurrentUser()==null)
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+        if(firebaseAuth.getCurrentUser()==null && isLoggedIn==false)
         {
             getActivity().finish();
             Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
         }
         else{
+            if(isLoggedIn){
+                String userId = Profile.getCurrentProfile().getId();
+                DatabaseReference firebaseDatabase=FirebaseDatabase.getInstance().getReference();
+                firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+                        Glide.with(getContext()).load(userInfo.getUserID()).into(imageView);
+
+
+                        textViewIme.setText((CharSequence) userInfo.getName());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("The read failed: " ,databaseError.getMessage());
+                    }
+                });
+
+            }
             updateinfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

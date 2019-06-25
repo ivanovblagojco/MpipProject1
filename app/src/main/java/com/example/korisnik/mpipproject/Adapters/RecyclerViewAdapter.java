@@ -2,6 +2,7 @@ package com.example.korisnik.mpipproject.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,6 +56,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<HomelessViewHolder
                     intent.putExtra("needs", finalHomeless.getNeeds());
                     intent.putExtra("distance", finalHomeless.getDistance()+ "");
                     intent.putExtra("imageUrl", finalHomeless.getImageUrl());
+                    Bundle b = new Bundle();
+                    b.putDouble("lat", finalHomeless.getLatitude());
+                    b.putDouble("lng",finalHomeless.getLongitude());
+                    intent.putExtras(b);
                     context.startActivity(intent);
                 }
             });

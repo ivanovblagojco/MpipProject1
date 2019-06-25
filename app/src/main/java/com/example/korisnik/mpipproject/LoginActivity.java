@@ -11,12 +11,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.korisnik.mpipproject.Repository.UserRepository;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,11 +41,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPassword;
     private TextView textViewSignUp;
     private FirebaseAuth firebaseAuth;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+    private UserRepository userRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        userRepository = new UserRepository();
+        callbackManager = CallbackManager.Factory.create();
+
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList("public_profile"));
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+
+        });
 
         buttonSignin=(Button) findViewById(R.id.buttonLogin);
         editTextEmail=(EditText)findViewById(R.id.editTextEmail);
@@ -86,4 +132,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, RegistrationActivity.class));
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void loadUserProfile(AccessToken accessToken){
+        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            String id = object.getString("id");
+                            String image_url = "https://graph.facebook.com/"+id+"/pictures?type=normal";
+                            com.example.korisnik.mpipproject.Models.UserInfo userInfo = new com.example.korisnik.mpipproject.Models.UserInfo(id,first_name+last_name,"",image_url);
+                            userRepository.insert(userInfo);
+                            finish();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+        );
+        Bundle parametars = new Bundle();
+        parametars.putString("fields","first_name,last_name,id");
+        request.setParameters(parametars);
+        request.executeAsync();
+    }
+    AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+        @Override
+        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                if(currentAccessToken!=null){
+                    loadUserProfile(currentAccessToken);
+                }
+        }
+    };
 }
